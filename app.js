@@ -1,10 +1,5 @@
-const bunyan = require('bunyan');
-const appname = 'Shopsy';
-
-module.exports = {
-  applicationName: appname,
-  logger: bunyan.createLogger({ name: appname }});
-  mongodb: {
-    dsn: 'mongodb://localshot:37017/shopsy',
-  }
-}
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const routeHandler = require('./routes');
