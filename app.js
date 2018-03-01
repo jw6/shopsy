@@ -20,4 +20,29 @@ module.exports = (config) => {
     resave: false,
     saveUninitialized: false,
   }));
+
+ app.get('/favicon.ico', (req, res) => {
+  res.status(204);
+ });
+
+ app.get('/robots.txt', (req, res) => {
+  res.status(204);
+ });
+
+ // Define 'global' template variables here
+ app.use(async (req, res, next) => {
+  // To show the application name on the page
+  res.locals.applicationName = config.applicationName;
+
+  // Set up flash messaging
+  if (!req.session.messages) {
+    req.session.messages = [];
+  }
+  res.locals.messages = req.session.messages;
+  return next();
+ });
+
+ app.use('/', routeHandler(config));
+
+ // catch 404 and forward to error handler
 }
