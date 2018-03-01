@@ -50,4 +50,11 @@ module.exports = (config) => {
   err.status = 404;
   next(err);
  });
+
+ //error handler
+ app.use((err, req, res) => {
+  // set locals, only providing error in development
+  res.locals.messages = err.message;
+  res.locals.error = res.app.get('env') === 'development' ? err : {};
+ })
 }
