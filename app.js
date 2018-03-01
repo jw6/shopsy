@@ -21,40 +21,45 @@ module.exports = (config) => {
     saveUninitialized: false,
   }));
 
- app.get('/favicon.ico', (req, res) => {
-  res.status(204);
- });
+  app.get('/favicon.ico', (req, res) => {
+    res.status(204);
+  });
 
- app.get('/robots.txt', (req, res) => {
-  res.status(204);
- });
+  app.get('/robots.txt', (req, res) => {
+    res.status(204);
+  });
 
- // Define 'global' template variables here
- app.use(async (req, res, next) => {
-  // To show the application name on the page
-  res.locals.applicationName = config.applicationName;
+  // Define 'global' template variables here
+  app.use(async (req, res, next) => {
+    // To show the application name on the page
+    res.locals.applicationName = config.applicationName;
 
-  // Set up flash messaging
-  if (!req.session.messages) {
-    req.session.messages = [];
-  }
-  res.locals.messages = req.session.messages;
-  return next();
- });
+    // Set up flash messaging
+    if (!req.session.messages) {
+      req.session.messages = [];
+     }
+    res.locals.messages = req.session.messages;
+    return next();
+  });
 
- app.use('/', routeHandler(config));
+  app.use('/', routeHandler(config));
 
- // catch 404 and forward to error handler
- app.use((req, res, next) => {
-  const err = new Error(`Not Found (${req.url})`);
-  err.status = 404;
-  next(err);
- });
+  // catch 404 and forward to error handler
+  app.use((req, res, next) => {
+    const err = new Error(`Not Found (${req.url})`);
+    err.status = 404;
+    next(err);
+  });
 
- //error handler
- app.use((err, req, res) => {
-  // set locals, only providing error in development
-  res.locals.messages = err.message;
-  res.locals.error = res.app.get('env') === 'development' ? err : {};
- })
+  //error handler
+  app.use((err, req, res) => {
+    // set locals, only providing error in development
+    res.locals.messages = err.message;
+    res.locals.error = res.app.get('env') === 'development' ? err : {};
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+  });
+
+  return app;
 }
